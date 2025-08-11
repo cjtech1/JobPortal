@@ -13,7 +13,7 @@ const Navbar = () => {
   const { user } = useUser();
 
   return (
-    <div className="flex justify-between p-4 shadow mx-auto items-center">
+    <div className="set-default flex justify-between  shadow  items-center">
       <div className="logo">
         <img src={assets.logo} alt="" />
       </div>
