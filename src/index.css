@@ -1,5 +1,5 @@
 @import "tailwindcss";
 
 .set-default {
-  @apply p-4  mx-auto my-auto  w-[100%];
+  @apply p-4  mx-auto my-auto;
 }

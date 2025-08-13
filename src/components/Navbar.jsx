@@ -14,14 +14,16 @@ const Navbar = () => {
 
   return (
     <div className="set-default flex justify-between  shadow  items-center">
-      <div className="logo">
+      <div className="logo max-sm:w-34">
         <img src={assets.logo} alt="" />
       </div>
       {user ? (
         <div className="flex justify-between gap-4 items-center">
           <Link to={"/applications"}>Applied Jobs</Link>
           <p> | </p>
-          <p>Hi,{user.firstName + " " + user.lastName}</p>
+          <p className="max-sm:hidden">
+            Hi,{user.firstName + " " + user.lastName}
+          </p>
           <UserButton />
         </div>
       ) : (
