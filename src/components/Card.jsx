@@ -1,7 +1,10 @@
 import React from "react";
 import { assets } from "../assets/assets";
+import { useNavigate } from "react-router-dom";
 
 const Card = ({ job }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col gap-2 border border-gray-300 shadow-md p-5 max-w-[322px]  flex-wrap ">
       <div>
@@ -26,12 +29,26 @@ const Card = ({ job }) => {
       </div>
       <div className="flex gap-2">
         <div className="inline-flex items-center cursor-pointer bg-blue-600 border border-blue-200 rounded px-4 py-1.5 text-white ">
-          <button type="button" className="cursor-pointer">
+          <button
+            type="button"
+            className="cursor-pointer"
+            onClick={() => {
+              navigate(`/apply-job/${job._id}`);
+              scrollTo(0, 0);
+            }}
+          >
             Apply Now
           </button>
         </div>
         <div className="inline-flex items-center cursor-pointer border border-gray-300 rounded px-4 py-1.5 text-gray-600">
-          <button type="button" className="cursor-pointer">
+          <button
+            type="button"
+            className="cursor-pointer"
+            onClick={() => {
+              navigate(`/apply-job/${job._id}`);
+              scrollTo(0, 0);
+            }}
+          >
             Learn More
           </button>
         </div>
