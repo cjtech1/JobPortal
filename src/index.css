@@ -3,3 +3,13 @@
 .set-default {
   @apply p-4  mx-auto my-auto;
 }
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

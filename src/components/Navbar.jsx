@@ -6,15 +6,21 @@ import {
   useUser,
   SignOutButton,
 } from "@clerk/clerk-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { openSignIn } = useClerk();
   const { user } = useUser();
+  const navigate = useNavigate();
 
   return (
     <div className="set-default flex justify-between  shadow  items-center">
-      <div className="logo max-sm:w-34">
+      <div
+        className="logo max-sm:w-34 cursor-pointer"
+        onClick={() => {
+          navigate(`/`);
+        }}
+      >
         <img src={assets.logo} alt="" />
       </div>
       {user ? (
