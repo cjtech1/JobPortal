@@ -9,12 +9,16 @@ export const AppContextProvider = (props) => {
     location: "",
   });
 
+  const [recruiterLogin, setRecruiterLogin] = useState(false);
+
   const [isSearched, setIsSearched] = useState(false);
   const value = {
     searchFilter,
     setSearchFilter,
     isSearched,
     setIsSearched,
+    recruiterLogin,
+    setRecruiterLogin,
   };
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>

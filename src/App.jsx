@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./Routes/Home";
 import ApplyJobs from "./Routes/ApplyJob";
 import Applications from "./Routes/Applications";
+import { AppContext } from "./context/AppContext";
 
 const App = () => {
   return (

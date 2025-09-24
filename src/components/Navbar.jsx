@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { assets } from "../assets/assets";
 import {
   useClerk,
@@ -7,11 +7,14 @@ import {
   SignOutButton,
 } from "@clerk/clerk-react";
 import { Link, useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 
 const Navbar = () => {
   const { openSignIn } = useClerk();
   const { user } = useUser();
   const navigate = useNavigate();
+
+  const { setRecruiterLogin } = useContext(AppContext);
 
   return (
     <div className="set-default flex justify-between  shadow  items-center">
@@ -34,7 +37,10 @@ const Navbar = () => {
         </div>
       ) : (
         <div className="flex justify-between gap-4">
-          <button className="text-gray-600 cursor-pointer">
+          <button
+            className="text-gray-600 cursor-pointer"
+            onClick={() => setRecruiterLogin((prev) => !prev)}
+          >
             Recriter Login
           </button>
 
