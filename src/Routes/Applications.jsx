@@ -102,7 +102,7 @@ const Applications = () => {
                       {job.location}
                     </td>
                     <td className="py-2 px-4 border-b max-sm:hidden">
-                      {moment(job.date).format("11")}
+                      {moment(job.date).format("ll")}
                     </td>
                     <td className="py-2 px-4 border-b">
                       <span

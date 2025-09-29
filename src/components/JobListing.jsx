@@ -65,8 +65,8 @@ const JobListing = () => {
   }, [selectedCategories, selectedLocations, searchFilter]);
 
   return (
-    <div className="set-default flex justify-between gap-14 max-sm:flex-col">
-      <div className="w-[40%] ">
+    <div className="set-default flex justify-start gap-8 max-sm:flex-col">
+      <div className="w-80 max-sm:w-full flex-shrink-0">
         <button
           onClick={() => {
             setFilter((prev) => !prev);
@@ -144,14 +144,15 @@ const JobListing = () => {
           </div>
         </div>
       </div>
-      <div>
+      {/* Display jobs */}
+      <div className="flex-1 min-w-0">
         <div className="flex  flex-col mb-5" id="jobListings">
           <h3 className="font-medium text-xl">Latest jobs</h3>
           <p className="font-extralight text-base">
             Get your desired job from top companies
           </p>
         </div>
-        <div className="flex flex-wrap gap-2  ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredJobs
             .slice((currentPage - 1) * 6, currentPage * 6)
             .map((job, index) => (

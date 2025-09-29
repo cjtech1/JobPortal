@@ -289,7 +289,7 @@ const RecruiterLogin = () => {
               ? &nbsp;
               <button
                 type="button"
-                className="text-blue-500"
+                className="text-blue-500 cursor-pointer"
                 onClick={() => {
                   setMode((prev) => (prev === "Sign Up" ? "Login" : "Sign Up"));
                   setTextSubmitted(false);
@@ -303,7 +303,12 @@ const RecruiterLogin = () => {
         </div>
 
         <div className="absolute right-5 top-5 cursor-pointer">
-          <button type="button" aria-label="Close" onClick={handleClose}>
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={handleClose}
+            className="cursor-pointer"
+          >
             <img src={assets.cross_icon} alt="close" />
           </button>
         </div>

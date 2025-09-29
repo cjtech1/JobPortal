@@ -13,10 +13,10 @@ const Card = ({ job }) => {
       <div>
         <h3 className="font-medium text-xl mb-2">{job.title}</h3>
         <div className="flex gap-2">
-          <div className="inline-flex items-center cursor-pointer bg-blue-50 border border-blue-200 rounded px-4 py-1.5 justify-center">
+          <div className="inline-flex items-center cursor-default bg-blue-50 border border-blue-200 rounded px-4 py-1.5 justify-center">
             <p>{job.location}</p>
           </div>
-          <div className="inline-flex items-center cursor-pointer bg-red-50 border border-red-200 rounded px-4 py-1.5">
+          <div className="inline-flex items-center cursor-default bg-red-50 border border-red-200 rounded px-4 py-1.5">
             <p>{job.level}</p>
           </div>
         </div>
