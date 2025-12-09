@@ -5,12 +5,15 @@ import connectDB from "./config/db.js";
 import * as Sentry from "@sentry/node";
 import "./config/instrument.js";
 import { clerkWebhooks } from "./controllers/webhooks.js";
+import router from "./route/companyRoutes.js";
+import connectCloudinary from "./config/cloudinary.js";
 
 //init express
 const app = express();
 
 //connect to db
 await connectDB();
+await connectCloudinary();
 
 //middleware
 app.use(cors());
@@ -22,6 +25,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/webhooks", clerkWebhooks);
+app.use("/api/comapny", router);
 
 // Test Sentry
 app.get("/debug-sentry", function mainHandler(req, res) {
