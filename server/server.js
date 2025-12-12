@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/webhooks", clerkWebhooks);
-app.use("/api/comapny", router);
+app.use("/api/company", router);
 
 // Test Sentry
 app.get("/debug-sentry", function mainHandler(req, res) {
