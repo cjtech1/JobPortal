@@ -5,7 +5,8 @@ import connectDB from "./config/db.js";
 import * as Sentry from "@sentry/node";
 import "./config/instrument.js";
 import { clerkWebhooks } from "./controllers/webhooks.js";
-import router from "./route/companyRoutes.js";
+import companyRoutes from "./route/companyRoutes.js";
+import jobRoutes from "./route/jobRoutes.js";
 import connectCloudinary from "./config/cloudinary.js";
 
 //init express
@@ -25,7 +26,8 @@ app.get("/", (req, res) => {
 });
 
 app.post("/webhooks", clerkWebhooks);
-app.use("/api/company", router);
+app.use("/api/company", companyRoutes);
+app.use("/api/jobs", jobRoutes);
 
 // Test Sentry
 app.get("/debug-sentry", function mainHandler(req, res) {

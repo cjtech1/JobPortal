@@ -95,34 +95,27 @@ export const loginCompany = async (req, res) => {
 export const getCompanyData = async (req, res) => {};
 
 export const postJob = async (req, res) => {
-  const { title, description, location, level, salary } = req.body;
-  if (!email || !password)
+  const { title, description, location, level, salary, category } = req.body;
+  if (!title || !description || !location || !level || !salary)
     return res.json({
       success: false,
       message: "make sure all the fields are filled",
     });
 
   try {
-    const jobData = {
+    const jobData = new Job({
+      companyId: req.company._id,
       title,
       description,
+      category,
       location,
       level,
       salary,
-    };
-
-    const job = await Job.create(jobData);
-
-    return res.json({
-      success: true,
-      jobDetails: {
-        title: job.title,
-        description: job.description,
-        location: job.location,
-        level: job.level,
-        salary: job.salary,
-      },
+      date: Date.now(),
     });
+
+    await jobData.save();
+    res.json({ success: true, jobData });
   } catch (error) {
     return res.json({
       success: false,
