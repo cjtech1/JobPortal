@@ -92,7 +92,19 @@ export const loginCompany = async (req, res) => {
     });
   }
 };
-export const getCompanyData = async (req, res) => {};
+export const getCompanyData = async (req, res) => {
+  const company = req.company;
+  if (!company) {
+    return res.json({
+      success: false,
+      message: "Invalid details Login again",
+    });
+  }
+  return res.json({
+    success: true,
+    company,
+  });
+};
 
 export const postJob = async (req, res) => {
   const { title, description, location, level, salary, category } = req.body;
@@ -125,6 +137,60 @@ export const postJob = async (req, res) => {
 };
 
 export const getCompanyJobApplicants = async (req, res) => {};
-export const getCompanyPostedJobs = async (req, res) => {};
+export const getCompanyPostedJobs = async (req, res) => {
+  const company = req.company;
+  if (!company) {
+    return res.json({
+      success: false,
+      message: "Invalid details Login again",
+    });
+  }
+
+  try {
+    const companyJobs = await Job.find({ companyId: company._id });
+    return res.json({
+      success: true,
+      companyJobs,
+    });
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 export const changeJobApplicationsStatus = async (req, res) => {};
-export const changeVisiblity = async (req, res) => {};
+
+export const changeVisiblity = async (req, res) => {
+  try {
+    const jobId = req.body.id;
+    const company = req.company;
+    if (!jobId) {
+      return res.json({
+        success: false,
+        message: "Invalid job details, try again",
+      });
+    }
+
+    const jobData = await Job.findOne({ _id: jobId });
+    if (jobData.companyId.toString() === company._id.toString()) {
+      jobData.visible = !jobData.visible;
+      await jobData.save();
+      return res.json({
+        success: true,
+        message: "Updated Successfully",
+        jobData,
+      });
+    } else {
+      return res.json({
+        success: false,
+        message: "Unauthorised to modify comapny details",
+      });
+    }
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
