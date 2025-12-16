@@ -9,7 +9,11 @@ export const AppContextProvider = (props) => {
     location: "",
   });
 
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   const [recruiterLogin, setRecruiterLogin] = useState(false);
+  const [companyToken, setCompanyToken] = useState(null);
+  const [companyData, setCompanyData] = useState(null);
 
   const [isSearched, setIsSearched] = useState(false);
   const value = {
@@ -19,6 +23,11 @@ export const AppContextProvider = (props) => {
     setIsSearched,
     recruiterLogin,
     setRecruiterLogin,
+    companyToken,
+    setCompanyToken,
+    companyData,
+    setCompanyData,
+    backendUrl,
   };
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>

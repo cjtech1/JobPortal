@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { assets } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
+import axios from "axios";
 
 const RecruiterLogin = () => {
   // mode: "Login" | "Sign Up"
@@ -18,6 +19,7 @@ const RecruiterLogin = () => {
   const [imagePreview, setImagePreview] = useState(null);
 
   const { setRecruiterLogin } = useContext(AppContext);
+  const { backendUrl } = useContext(AppContext);
 
   const [textSubmitted, setTextSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
@@ -130,8 +132,19 @@ const RecruiterLogin = () => {
         setErrors(err);
         return;
       }
-      // TODO: call login API here. For now simulate success
-      console.log("Logging in with", { email, password });
+      //  call login API here.
+      try {
+        const { data } = await axios.post(backendUrl + "/api/company/login", {
+          email,
+          password,
+        });
+
+        if (data.success) {
+          console.log(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
       handleClose();
       return;
     }
