@@ -1,14 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { assets } from "../assets/assets";
 import Footer from "../components/Footer";
+import { AppContext } from "../context/AppContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   useEffect(() => {
     navigate("/dashboard/add-jobs");
   }, []);
+  const { companyData } = useContext(AppContext);
+
   return (
     <div>
       {/* NavBar */}
@@ -18,10 +21,16 @@ const Dashboard = () => {
         </div>
         <div className="flex gap-4 items-center">
           <div>
-            <p className="max-sm:hidden">Welcome Recruiter</p>
+            <p className="max-sm:hidden">
+              Welcome {companyData ? companyData.name : "Recruiter"}
+            </p>
           </div>
           <div className="relative group">
-            <img src={assets.company_icon} alt="" />
+            <img
+              src={companyData ? companyData.image : assets.company_icon}
+              alt=""
+              className="w-12 h-12 rounded-4xl object-cover"
+            />
             <div className="absolute hidden  group-hover:block z-10 right-3  bg-gray-50 shadow px-2 py-3">
               <ul>
                 <li className="cursor-pointer">logout</li>

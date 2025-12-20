@@ -84,6 +84,11 @@ export const loginCompany = async (req, res) => {
           message: "Check Email or Password is correct",
         });
       }
+    } else {
+      res.json({
+        success: false,
+        message: "Check Email or Password is correct",
+      });
     }
   } catch (error) {
     res.json({
@@ -92,6 +97,7 @@ export const loginCompany = async (req, res) => {
     });
   }
 };
+
 export const getCompanyData = async (req, res) => {
   const company = req.company;
   if (!company) {
@@ -100,15 +106,31 @@ export const getCompanyData = async (req, res) => {
       message: "Invalid details Login again",
     });
   }
-  return res.json({
-    success: true,
-    company,
-  });
+
+  try {
+    const companyData = await Comapny.findById(company);
+    if (companyData) {
+      return res.json({
+        success: true,
+        companyData,
+      });
+    } else {
+      return res.json({
+        success: false,
+        message: "Unable to find company",
+      });
+    }
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 export const postJob = async (req, res) => {
   const { title, description, location, level, salary, category } = req.body;
-  if (!title || !description || !location || !level || !salary)
+  if (!title || !description || !location || !level || !salary || !category)
     return res.json({
       success: false,
       message: "make sure all the fields are filled",

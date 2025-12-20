@@ -8,8 +8,11 @@ import React, {
 import { assets } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const RecruiterLogin = () => {
+  const navigate = useNavigate();
   // mode: "Login" | "Sign Up"
   const [mode, setMode] = useState("Login");
   const [name, setName] = useState("");
@@ -19,7 +22,8 @@ const RecruiterLogin = () => {
   const [imagePreview, setImagePreview] = useState(null);
 
   const { setRecruiterLogin } = useContext(AppContext);
-  const { backendUrl } = useContext(AppContext);
+  const { backendUrl, setCompanyToken, setCompanyData } =
+    useContext(AppContext);
 
   const [textSubmitted, setTextSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
@@ -140,7 +144,12 @@ const RecruiterLogin = () => {
         });
 
         if (data.success) {
-          console.log(data);
+          setCompanyData(data.company);
+          setCompanyToken(data.token);
+          localStorage.setItem("companyToken", data.token);
+          navigate("/dashboard");
+        } else {
+          toast.error(data.message);
         }
       } catch (error) {
         console.log(error);
@@ -148,15 +157,37 @@ const RecruiterLogin = () => {
       handleClose();
       return;
     }
-
     // mode === "Sign Up" and textSubmitted === true -> finalize signup
     const err = validateSignup();
     if (Object.keys(err).length) {
       setErrors(err);
       return;
     }
-    // TODO: call signup API here with name,email,password,imageFile
-    console.log("Creating account", { name, email, password, imageFile });
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("image", imageFile);
+
+    //signup API  with name,email,password,imageFile
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/company/register",
+        formData
+      );
+
+      if (data.success) {
+        setCompanyData(data.company);
+        setCompanyToken(data.token);
+        localStorage.setItem("companyToken", data.token);
+        navigate("/dashboard");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
     handleClose();
   };
 
