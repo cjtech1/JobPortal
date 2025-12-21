@@ -3,6 +3,7 @@ import bcrypt, { compare } from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import generateToken from "../utils/generateTokens.js";
 import Job from "../models/Job.js";
+import JobApplication from "../models/JobApplication.js";
 
 export const registerCompany = async (req, res) => {
   const { name, email, password } = req.body;
@@ -159,6 +160,7 @@ export const postJob = async (req, res) => {
 };
 
 export const getCompanyJobApplicants = async (req, res) => {};
+
 export const getCompanyPostedJobs = async (req, res) => {
   const company = req.company;
   if (!company) {
@@ -170,9 +172,17 @@ export const getCompanyPostedJobs = async (req, res) => {
 
   try {
     const companyJobs = await Job.find({ companyId: company._id });
+
+    const jobsData = await Promise.all(
+      companyJobs.map(async (job) => {
+        const applicants = await JobApplication.find({ jobId: job._id });
+        return { ...job.toObject(), applicants: applicants.length };
+      })
+    );
+
     return res.json({
       success: true,
-      companyJobs,
+      jobsData,
     });
   } catch (error) {
     return res.json({
@@ -206,7 +216,7 @@ export const changeVisiblity = async (req, res) => {
     } else {
       return res.json({
         success: false,
-        message: "Unauthorised to modify comapny details",
+        message: "Unauthorised to modify job details",
       });
     }
   } catch (error) {
