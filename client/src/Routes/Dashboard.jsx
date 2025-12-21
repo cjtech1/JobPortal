@@ -10,7 +10,16 @@ const Dashboard = () => {
   useEffect(() => {
     navigate("/dashboard/add-jobs");
   }, []);
-  const { companyData } = useContext(AppContext);
+
+  const { companyData, setCompanyToken, setCompanyData } =
+    useContext(AppContext);
+
+  function handleLogOut() {
+    localStorage.removeItem("companyToken");
+    setCompanyData(null);
+    setCompanyToken(null);
+    navigate("/");
+  }
 
   return (
     <div>
@@ -33,7 +42,9 @@ const Dashboard = () => {
             />
             <div className="absolute hidden  group-hover:block z-10 right-3  bg-gray-50 shadow px-2 py-3">
               <ul>
-                <li className="cursor-pointer">logout</li>
+                <li className="cursor-pointer" onClick={handleLogOut}>
+                  logout
+                </li>
               </ul>
             </div>
           </div>

@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const { companyToken } = useContext(AppContext);
+
   return (
     // className="flex justify-center items-center mt-1"
     <div>
