@@ -19,8 +19,12 @@ const App = () => {
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/apply-job/:id" element={<ApplyJobs />} />
-        <Route path="/applications" element={<Applications />} />
+        {!companyToken ? (
+          <>
+            <Route path="/apply-job/:id" element={<ApplyJobs />} />
+            <Route path="/applications" element={<Applications />} />
+          </>
+        ) : null}
         <Route path="/dashboard" element={<Dashboard />}>
           {companyToken ? (
             <>

@@ -1,5 +1,3 @@
-import React from "react";
-import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 
 const Card = ({ job }) => {
@@ -8,7 +6,11 @@ const Card = ({ job }) => {
   return (
     <div className="flex flex-col gap-2 border border-gray-300 shadow-md p-5 max-w-[322px]  flex-wrap ">
       <div>
-        <img src={assets.company_icon} alt="job image" />
+        <img
+          className="w-12 h-12  rounded-4xl object-cover"
+          src={job.companyId.image}
+          alt="job image"
+        />
       </div>
       <div>
         <h3 className="font-medium text-xl mb-2">{job.title}</h3>

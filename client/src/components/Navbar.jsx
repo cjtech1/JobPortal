@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { Children, useContext } from "react";
 import { assets } from "../assets/assets";
 import {
   useClerk,
@@ -14,7 +14,20 @@ const Navbar = () => {
   const { user } = useUser();
   const navigate = useNavigate();
 
-  const { setRecruiterLogin } = useContext(AppContext);
+  const {
+    setRecruiterLogin,
+    companyToken,
+    companyData,
+    setCompanyData,
+    setCompanyToken,
+  } = useContext(AppContext);
+
+  function handleLogOut() {
+    localStorage.removeItem("companyToken");
+    setCompanyData(null);
+    setCompanyToken(null);
+    navigate("/");
+  }
 
   return (
     <div className="set-default flex justify-between  shadow  items-center">
@@ -26,7 +39,7 @@ const Navbar = () => {
       >
         <img src={assets.logo} alt="" />
       </div>
-      {user ? (
+      {user && (
         <div className="flex justify-between gap-4 items-center">
           <Link to={"/applications"}>Applied Jobs</Link>
           <p> | </p>
@@ -35,7 +48,29 @@ const Navbar = () => {
           </p>
           <UserButton />
         </div>
-      ) : (
+      )}
+      {companyData && (
+        <div className="flex justify-between gap-4 items-center">
+          <Link to={"/dashboard"}>Dashboard</Link>
+          <p> | </p>
+          <p className="max-sm:hidden">Hi,{companyData.name}</p>
+          <div className="relative group">
+            <img
+              className="h-10 w-10 rounded-4xl object-cover"
+              src={companyData.image}
+              alt="companyLogo"
+            />
+            <div className="absolute hidden  group-hover:block z-10 right-3  bg-gray-50 shadow px-2 py-3">
+              <ul>
+                <li className="cursor-pointer" onClick={handleLogOut}>
+                  logout
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+      {!companyToken && !user && (
         <div className="flex justify-between gap-4">
           <button
             className="text-gray-600 cursor-pointer"

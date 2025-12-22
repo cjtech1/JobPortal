@@ -7,12 +7,12 @@ export const getJobs = async (req, res) => {
       select: "-password",
     });
     res.json({
-      sucess: true,
+      success: true,
       jobs,
     });
   } catch (error) {
     res.json({
-      sucess: false,
+      success: false,
       message: error.message,
     });
   }
@@ -28,18 +28,18 @@ export const getJobById = async (req, res) => {
     });
     if (jobs) {
       res.json({
-        sucess: true,
+        success: true,
         jobs,
       });
     } else {
       res.json({
-        sucess: false,
+        success: false,
         message: "Job Not Found",
       });
     }
   } catch (error) {
     res.json({
-      sucess: false,
+      success: false,
       message: error.message,
     });
   }

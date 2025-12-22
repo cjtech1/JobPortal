@@ -1,20 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import Card from "./Card";
 import { AppContext } from "../context/AppContext";
-import {
-  assets,
-  JobCategories,
-  JobLocations,
-  jobsData,
-} from "../assets/assets";
+import { assets, JobCategories, JobLocations } from "../assets/assets";
 
 const JobListing = () => {
-  const { searchFilter, isSearched, setSearchFilter } = useContext(AppContext);
+  const { searchFilter, isSearched, setSearchFilter, jobData } =
+    useContext(AppContext);
   const [filter, setFilter] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState([]);
-  const [filteredJobs, setFilteredJobs] = useState(jobsData);
+  const [filteredJobs, setFilteredJobs] = useState(jobData);
 
   const hanldeCategoryChange = (category) => {
     setSelectedCategories((prev) =>
@@ -49,7 +45,7 @@ const JobListing = () => {
       searchFilter.location === "" ||
       job.location.toLowerCase().includes(searchFilter.location.toLowerCase());
 
-    const newFilteredJobs = jobsData
+    const newFilteredJobs = jobData
       .slice()
       .reverse()
       .filter(
@@ -62,7 +58,7 @@ const JobListing = () => {
 
     setFilteredJobs(newFilteredJobs);
     setCurrentPage(1);
-  }, [selectedCategories, selectedLocations, searchFilter]);
+  }, [selectedCategories, selectedLocations, searchFilter, jobData]);
 
   return (
     <div className="set-default flex justify-start gap-8 max-sm:flex-col">

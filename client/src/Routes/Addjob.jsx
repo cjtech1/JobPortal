@@ -31,7 +31,7 @@ const Addjob = () => {
         });
         setTitle("");
         setDescription("");
-        setLocation("Banglore");
+        setLocation("Bangalore");
         setLevel("Senior Level");
         setSalary("");
         setCategory("Programming");

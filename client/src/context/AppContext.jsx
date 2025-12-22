@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { jobsData } from "../assets/assets";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AppContext = createContext();
@@ -16,6 +17,8 @@ export const AppContextProvider = (props) => {
   const [recruiterLogin, setRecruiterLogin] = useState(false);
   const [companyToken, setCompanyToken] = useState(null);
   const [companyData, setCompanyData] = useState(null);
+
+  const [jobData, setJobData] = useState(jobsData);
 
   const [isSearched, setIsSearched] = useState(false);
 
@@ -35,6 +38,20 @@ export const AppContextProvider = (props) => {
     }
   }, [backendUrl, companyToken]);
 
+  const fetchJobData = async () => {
+    try {
+      const { data } = await axios.get(backendUrl + "/api/jobs");
+      if (data.success) {
+        setJobData(data.jobs);
+        console.log(data.jobs);
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
   useEffect(() => {
     const storedCompanyData = localStorage.getItem("companyToken");
     if (storedCompanyData) {
@@ -48,6 +65,10 @@ export const AppContextProvider = (props) => {
     }
   }, [companyToken, fetchCompanyData]);
 
+  useEffect(() => {
+    fetchJobData();
+  }, []);
+
   const value = {
     searchFilter,
     setSearchFilter,
@@ -60,6 +81,8 @@ export const AppContextProvider = (props) => {
     companyData,
     setCompanyData,
     backendUrl,
+    jobData,
+    setJobData,
   };
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
