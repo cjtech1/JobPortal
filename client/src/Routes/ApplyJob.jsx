@@ -9,20 +9,54 @@ import moment from "moment";
 import Footer from "../components/Footer";
 import Card from "../components/Card";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useAuth } from "@clerk/clerk-react";
 
 const ApplyJob = () => {
   const { id } = useParams();
   const [JobsData, setJobData] = useState(null);
-  const { backendUrl, jobData } = useContext(AppContext);
+  const [applied, setApplied] = useState(false);
+  const { backendUrl, jobData, userApplications } = useContext(AppContext);
+
+  const { getToken } = useAuth();
 
   const fetchJobs = async () => {
     try {
       const { data } = await axios.get(backendUrl + `/api/jobs/${id}`);
       if (data.success) {
         setJobData(data.jobs);
-        console.log(data.jobs);
       } else {
         console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const isAlreadyApplied = () => {
+    const application = userApplications.filter(
+      (application) => application.jobId._id === id
+    );
+    if (application.length > 0) {
+      setApplied(true);
+    }
+  };
+
+  const applyJob = async () => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.post(
+        backendUrl + "/api/users/apply",
+        { jobId: id },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (data.success) {
+        setApplied(true);
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
       console.log(error);
@@ -32,6 +66,12 @@ const ApplyJob = () => {
   useEffect(() => {
     if (jobData.length > 0) fetchJobs();
   }, [id, jobData]);
+
+  useEffect(() => {
+    if (id) {
+      isAlreadyApplied();
+    }
+  }, [id, userApplications]);
 
   return JobsData ? (
     <div>
@@ -69,9 +109,21 @@ const ApplyJob = () => {
             </div>
           </div>
           <div className="flex flex-col pr-4 gap-2 items-end">
-            <button className="cursor-pointer bg-blue-700 p-3 text-white rounded-[5px]">
-              Apply Now
-            </button>
+            {applied ? (
+              <button
+                className="cursor-pointer bg-blue-700 p-3 text-white rounded-[5px]"
+                disabled
+              >
+                Applied
+              </button>
+            ) : (
+              <button
+                className="cursor-pointer bg-blue-700 p-3 text-white rounded-[5px]"
+                onClick={applyJob}
+              >
+                Apply Now
+              </button>
+            )}
             <p>Posted: {moment(JobsData.date).fromNow()}</p>
           </div>
         </div>
@@ -83,9 +135,21 @@ const ApplyJob = () => {
             className="rich-text"
             dangerouslySetInnerHTML={{ __html: JobsData.description }}
           ></div>
-          <button className="cursor-pointer bg-blue-700 p-3 text-white rounded-[5px] mt-10">
-            Apply Now
-          </button>
+          {applied ? (
+            <button
+              className="cursor-pointer bg-blue-700 p-3 text-white rounded-[5px] mt-10"
+              disabled
+            >
+              Applied
+            </button>
+          ) : (
+            <button
+              className="cursor-pointer bg-blue-700 p-3 text-white rounded-[5px] mt-10"
+              onClick={applyJob}
+            >
+              Apply Now
+            </button>
+          )}
         </div>
         <div className="flex flex-col gap-2">
           <h2>More jobs from {JobsData.companyId.name}</h2>

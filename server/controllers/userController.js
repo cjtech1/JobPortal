@@ -42,13 +42,8 @@ export const applyForJob = async (req, res) => {
       });
     }
 
-    const companyId = Job.findOne(
-      { _id: jobId },
-      {
-        companyId: 1,
-        _id: 0,
-      }
-    );
+    const companyDetails = await Job.findById(jobId).select("companyId");
+    const companyId = companyDetails.companyId;
 
     if (!companyId) {
       return res.json({

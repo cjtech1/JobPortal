@@ -7,12 +7,12 @@ const JobApplicationSchema = new mongoose.Schema({
   },
   companyId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "company",
+    ref: "Company",
     required: true,
   },
   jobId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Job",
+    ref: "JobDetails",
     required: true,
   },
   status: {
