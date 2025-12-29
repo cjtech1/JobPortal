@@ -4,12 +4,40 @@ import { assets } from "../assets/assets";
 import moment from "moment";
 import Footer from "../components/Footer";
 import { AppContext } from "../context/AppContext";
+import { useAuth } from "@clerk/clerk-react";
+import axios from "axios";
 
 const Applications = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [resume, setResume] = useState(null);
-  const { userApplications } = useContext(AppContext);
+  const { userApplications, backendUrl } = useContext(AppContext);
   console.log(userApplications);
+
+  // const { user } = useUser();
+  const { getToken } = useAuth();
+
+  const updateUserResume = async () => {
+    try {
+      const token = await getToken();
+
+      const formData = new FormData();
+      formData.append("resume", resume);
+
+      const { data } = await axios.post(
+        backendUrl + "/api/users/update-resume",
+        formData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (data.success) {
+        console.log(data);
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <div>
@@ -49,6 +77,7 @@ const Applications = () => {
                 <button
                   onClick={() => {
                     setIsEdit((prev) => !prev);
+                    updateUserResume();
                   }}
                   className="bg-white border-2 border-green-200 px-2 py-1
               hover:bg-green-100 hover:text-black rounded-md font-medium cursor-pointer"

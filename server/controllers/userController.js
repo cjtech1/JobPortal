@@ -102,7 +102,7 @@ export const getUserJobApplications = async (req, res) => {
 };
 
 export const updateUserResume = async (req, res) => {
-  const { userId } = req.auth.userId;
+  const userId = req.auth.userId;
   const resumeFile = req.file;
 
   if (!resumeFile) {

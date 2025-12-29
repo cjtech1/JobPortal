@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import Loading from "../components/Loading";
@@ -16,7 +16,10 @@ const ApplyJob = () => {
   const { id } = useParams();
   const [JobsData, setJobData] = useState(null);
   const [applied, setApplied] = useState(false);
-  const { backendUrl, jobData, userApplications } = useContext(AppContext);
+  const [recommended, setRecommended] = useState(null);
+  const { backendUrl, jobData, userApplications, userData } =
+    useContext(AppContext);
+  const navigate = useNavigate();
 
   const { getToken } = useAuth();
 
@@ -43,6 +46,11 @@ const ApplyJob = () => {
   };
 
   const applyJob = async () => {
+    if (!userData.resume) {
+      toast.error("Please upload your resume");
+      navigate("/applications");
+      return;
+    }
     try {
       const token = await getToken();
       const { data } = await axios.post(
@@ -62,6 +70,13 @@ const ApplyJob = () => {
       console.log(error);
     }
   };
+
+  // mini recommendation system
+  useEffect(() => {
+    const appliedJobs = new Set(userApplications.map((job) => job.jobId._id));
+    const rec = jobData.filter((job) => !appliedJobs.has(job._id));
+    setRecommended(rec);
+  }, []);
 
   useEffect(() => {
     if (jobData.length > 0) fetchJobs();
@@ -153,7 +168,7 @@ const ApplyJob = () => {
         </div>
         <div className="flex flex-col gap-2">
           <h2>More jobs from {JobsData.companyId.name}</h2>
-          {jobData
+          {recommended
             .filter(
               (job) =>
                 job._id != JobsData._id &&
