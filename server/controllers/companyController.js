@@ -159,7 +159,26 @@ export const postJob = async (req, res) => {
   }
 };
 
-export const getCompanyJobApplicants = async (req, res) => {};
+export const getCompanyJobApplicants = async (req, res) => {
+  try {
+    const companyId = req.company._id;
+
+    const applications = await JobApplication.find({ companyId })
+      .populate("userId", "name image resume")
+      .populate("jobId", "title location category level salary")
+      .exec();
+
+    return res.json({
+      success: true,
+      applications,
+    });
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: "Can't find applicants data",
+    });
+  }
+};
 
 export const getCompanyPostedJobs = async (req, res) => {
   const company = req.company;
@@ -177,7 +196,7 @@ export const getCompanyPostedJobs = async (req, res) => {
       companyJobs.map(async (job) => {
         const applicants = await JobApplication.find({ jobId: job._id });
         return { ...job.toObject(), applicants: applicants.length };
-      })
+      }),
     );
 
     return res.json({
@@ -191,7 +210,9 @@ export const getCompanyPostedJobs = async (req, res) => {
     });
   }
 };
-export const changeJobApplicationsStatus = async (req, res) => {};
+export const changeJobApplicationsStatus = async (req, res) => {
+  
+};
 
 export const changeVisiblity = async (req, res) => {
   try {

@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 
 export const clerkWebhooks = async (req, res) => {
   try {
-    const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRETS);
+    const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
 
     //verification
     await whook.verify(JSON.stringify(req.body), {
