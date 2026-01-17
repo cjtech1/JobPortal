@@ -49,7 +49,7 @@ const Navbar = () => {
           <UserButton />
         </div>
       )}
-      {companyData && (
+      {companyData && companyData.image && (
         <div className="flex justify-between gap-4 items-center">
           <Link to={"/dashboard"}>Dashboard</Link>
           <p> | </p>
