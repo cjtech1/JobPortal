@@ -23,6 +23,25 @@ const ViewApplication = () => {
     }
   };
 
+  const statusHandler = async (id, status) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/company/change-status",
+        { id, status },
+        {
+          headers: { token: companyToken },
+        },
+      );
+      if (data.success) {
+        fetchCompanyJobApplicants();
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (companyToken) {
       fetchCompanyJobApplicants();
@@ -81,15 +100,31 @@ const ViewApplication = () => {
                       </a>
                     </td>
                     <td className="py-2 px-4 border-b  relative group">
-                      <p className="cursor-pointer">•••</p>
-                      <div className=" flex-col gap-2 hidden group-hover:flex absolute bg-white p-2 shadow z-10 border border-black">
-                        <p className="px-4 py-2 bg-green-500 cursor-pointer">
-                          Accept
-                        </p>
-                        <p className="px-4 py-2 bg-red-500 text-white cursor-pointer">
-                          Reject
-                        </p>
-                      </div>
+                      {applicant.status === "Pending" ? (
+                        <div>
+                          <p className="cursor-pointer">•••</p>
+                          <div className=" flex-col gap-2 hidden group-hover:flex absolute bg-white p-2 shadow z-10 border border-black">
+                            <p
+                              onClick={() => {
+                                statusHandler(applicant._id, "Accepted");
+                              }}
+                              className="px-4 py-2 bg-green-500 cursor-pointer"
+                            >
+                              Accept
+                            </p>
+                            <p
+                              onClick={() => {
+                                statusHandler(applicant._id, "Rejected");
+                              }}
+                              className="px-4 py-2 bg-red-500 text-white cursor-pointer"
+                            >
+                              Reject
+                            </p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>{applicant.status}</div>
+                      )}
                     </td>
                   </tr>
                 ))}
