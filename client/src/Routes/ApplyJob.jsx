@@ -95,11 +95,13 @@ const ApplyJob = () => {
         <div className="pl-4 flex justify-between w-full">
           <div className="flex gap-4">
             <div className="p-6 bg-blue-100 rounded-[5px] ">
-              <img
-                className="w-16 h-16 object-contain rounded-4xl"
-                src={JobsData.companyId.image}
-                alt="job-image"
-              />
+              {JobsData?.companyId?.image && (
+                <img
+                  className="w-16 h-16 object-contain rounded-4xl"
+                  src={JobsData.companyId.image}
+                  alt="job-image"
+                />
+              )}
             </div>
             <div className="flex flex-col gap-4">
               <h1 className="font-medium text-3xl">{JobsData.title}</h1>

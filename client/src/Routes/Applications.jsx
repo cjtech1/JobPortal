@@ -127,12 +127,14 @@ const Applications = () => {
                   {userApplications.map((job, index) => (
                     <tr key={index}>
                       <td className="flex items-center gap-2 border-b py-3 px-3 ">
-                        <img
-                          className="w-10 h-10 rounded-4xl object-cover"
-                          src={job.companyId.image}
-                          alt=""
-                        />
-                        {job.companyId.name}
+                        {job?.companyId?.image && (
+                          <img
+                            className="w-10 h-10 rounded-4xl object-cover"
+                            src={job.companyId.image}
+                            alt=""
+                          />
+                        )}
+                        {job?.companyId?.name}
                       </td>
                       <td className="py-2 px-4 border-b">{job.jobId.title}</td>
                       <td className="py-2 px-4 border-b max-sm:hidden">

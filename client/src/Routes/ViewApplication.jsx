@@ -77,12 +77,14 @@ const ViewApplication = () => {
                   <tr key={index}>
                     <td className="py-2 px-4 border-b">{index + 1}</td>
                     <td className="flex items-center gap-2 border-b py-3 px-3 ">
-                      <img
-                        src={applicant.userId.image}
-                        alt=""
-                        className="w-[45px] rounded-full h-[45px]"
-                      />
-                      {applicant.userId.name}
+                      {applicant?.userId?.image && (
+                        <img
+                          src={applicant.userId.image}
+                          alt=""
+                          className="w-[45px] rounded-full h-[45px]"
+                        />
+                      )}
+                      {applicant?.userId?.name}
                     </td>
                     <td className="py-2 px-4 border-b">
                       {applicant.jobId.title}
